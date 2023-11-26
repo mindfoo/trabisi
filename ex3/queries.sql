@@ -71,7 +71,7 @@ Para cada instrução deve ser também apresentada, em comentário, a descriçã
     SELECT codigo, email, COUNT(*) AS nreservas
     FROM loja
     JOIN reserva ON loja.codigo = reserva.loja
-    WHERE reserva.data <= CURRENT_DATE
+    WHERE reserva.dtinicio <= CURRENT_DATE
     GROUP BY loja.codigo, loja.email
     HAVING COUNT(*) > 5
     ORDER BY nreservas DESC; 
@@ -88,10 +88,10 @@ Para cada instrução deve ser também apresentada, em comentário, a descriçã
     SELECT nome
     FROM pessoa, clientereserva, reserva, bicicleta
     WHERE pessoa.id = clientereserva.cliente
-    AND clientereserva.reserva = reserva.id
+    AND clientereserva.reserva = reserva.noreserva
     AND reserva.bicicleta = bicicleta.id
     AND bicicleta.estado = 'em manutenção'
-    AND EXTRACT(YEAR FROM reserva.data) = EXTRACT(YEAR FROM CURRENT_DATE) - 1;
+    AND EXTRACT(YEAR FROM reserva.dtinicio) = EXTRACT(YEAR FROM CURRENT_DATE) - 1;
 
 
     /* 
@@ -102,9 +102,9 @@ Para cada instrução deve ser também apresentada, em comentário, a descriçã
     *   seleccionar apenas os gestores
     */
 
-    SELECT nome, morada, telefone 
+    SELECT distinct nome, morada, telefone 
     FROM pessoa, clientereserva, loja
-    WHERE pessoa.id = clientereserva.cliente AND loja.gestor = pessoa.id
+    WHERE pessoa.id = clientereserva.cliente AND loja.gestor = pessoa.id;
 
 
 
