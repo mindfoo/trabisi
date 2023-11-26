@@ -11,6 +11,40 @@ Para cada instrução deve ser também apresentada, em comentário, a descriçã
 
 -- (d) Apresente a marca e o modelo da bicicleta com maior autonomia dentro das bicicletas disponíveis.
 
+/*
+      (a) Implemente em PostgreSQL as interrogações pedidas na alínea 2 (Pode escolher uma das soluções que apresentou acima, desde que nesta fase consiga fazer uso de todos os operadores).
+*/
+     
+
+/*    (b) Obtenha os nomes de todos os clientes que fizeram pelo menos uma reserva numa loja localizada em Lisboa.
+
+        seleciona atributos da tabela pessoa, clientereserva, reserva e conta o numero de reservas
+        acrescenta a condição de forma a que seja filtrado pelo nome do cliente com reservas em lisboa
+        faz a contagem das reservas maiores ou iguais a 1
+        agrupa os resultados pelo nome
+*/
+    SELECT nome, COUNT(*) AS nreservas
+    FROM pessoa, clientereserva, reserva
+    WHERE pessoa.id = clientereserva.id
+    AND clientereserva.id = reserva.noreserva
+    AND reserva.noreserva = 'Lisboa'
+    HAVING COUNT(*) >=  1
+    GROUP BY pessoa.nome;
+    
+    
+/*    (c) Encontre os números de série dos dispositivos com uma percentagem de bateria superior a 50%, e liste-os por ordem crescente da sua percentagem de bateria.
+*/
+
+    SELECT noserie
+    FROM dispositivo
+    WHERE bateria > 50
+    ORDER BY bateria;
+
+    
+/*    (d) Apresente a marca e o modelo da bicicleta com maior autonomia dentro das bicicletas disponíveis.
+
+*/
+
     /*
     *   (e) Obter o número total de reservas para cada loja, bem como o seu código e o número total de reservas.
     */
