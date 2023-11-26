@@ -1,6 +1,7 @@
 /*
  * Delete de dados das tabelas criadas.
  * */
+ 
 delete from bicicleta;
 delete from classica;
 delete from clientereserva;
