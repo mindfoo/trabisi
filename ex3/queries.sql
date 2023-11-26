@@ -11,13 +11,64 @@ Para cada instrução deve ser também apresentada, em comentário, a descriçã
 
 -- (d) Apresente a marca e o modelo da bicicleta com maior autonomia dentro das bicicletas disponíveis.
 
--- (e) Obter o número total de reservas para cada loja, bem como o seu código e o número total de reservas.
+    /*
+    *   (e) Obter o número total de reservas para cada loja, bem como o seu código e o número total de reservas.
+    */
 
--- (f)Liste todas as lojas (codigo e email) que tenham efectuado mais de 5 reservas, até á presente data, e enumere-as por ordem decrescente do número de reservas (Nota: Faça uso dos operadores/funções de data e tempo).
+    SELECT codigo, COUNT(*) AS treservas
+    FROM loja
+    JOIN reserva ON loja.codigo = reserva.loja
+    GROUP BY loja.codigo;
 
--- (g) Apresente os nomes dos clientes que efectuaram reservas de bicicletas cujo estado tem como valor “em manutencao” no ano passado (Nota: Faça uso dos operadores/funções de data e tempo).
 
--- (h) Listar as informações (nome, morada, telefone) das pessoas que geriram uma loja e efectuaram reservas.
+    /*
+    *   (f) Liste todas as lojas (codigo e email) que tenham efectuado mais de 5 reservas, até á presente data, e enumere-as por ordem *    decrescente do número de reservas (Nota: Faça uso dos operadores/funções de data e tempo).
+    
+        seleciona atributos da tabela loja e conta numero de reservas
+        considera a tabela reserva para reservas feitas numa dada loja
+        filtra as reservas até ao dia de hoje
+        agrupa os resultados pelo codigo e email da loja
+        inclui apenas lojas com mais de 5 reservas
+    */
+
+    SELECT codigo, email, COUNT(*) AS nreservas
+    FROM loja
+    JOIN reserva ON loja.codigo = reserva.loja
+    WHERE reserva.data <= CURRENT_DATE
+    GROUP BY loja.codigo, loja.email
+    HAVING COUNT(*) > 5
+    ORDER BY nreservas DESC; 
+
+    /*
+    *   (g) Apresente os nomes dos clientes que efectuaram reservas de bicicletas cujo estado tem como valor “em manutencao” no ano *   *   passado (Nota: Faça uso dos operadores/funções de data e tempo).
+    *   
+    *   selecciona nome de pessoa
+    *   das pessoas que fizeram reservas
+    *   das bicicletas que foram reservadas
+    *   onde se apenas consideram clientes e bicicletas em manutenção relativas ao ano passado
+    */
+
+    SELECT nome
+    FROM pessoa, clientereserva, reserva, bicicleta
+    WHERE pessoa.id = clientereserva.cliente
+    AND clientereserva.reserva = reserva.id
+    AND reserva.bicicleta = bicicleta.id
+    AND bicicleta.estado = 'em manutenção'
+    AND EXTRACT(YEAR FROM reserva.data) = EXTRACT(YEAR FROM CURRENT_DATE) - 1;
+
+
+    /* 
+    *   (h) Listar as informações (nome, morada, telefone) das pessoas que geriram uma loja e efectuaram reservas.
+    *
+    *   seleccionar nome, morada, telefone da tabela pessoa
+    *   seleccionar apenas os clientes que fizeram reservas
+    *   seleccionar apenas os gestores
+    */
+
+    SELECT nome, morada, telefone 
+    FROM pessoa, clientereserva, loja
+    WHERE pessoa.id = clientereserva.cliente AND loja.gestor = pessoa.id
+
 
 
 /*
