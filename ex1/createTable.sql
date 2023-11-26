@@ -31,7 +31,7 @@ create table eletrica(
 	bicicleta integer primary key,
 	autonomia integer, 
     velocidade integer,
-    FOREIGN KEY (bicicleta) REFERENCES bicicleta (id)
+    FOREIGN KEY (bicicleta) REFERENCES bicicleta (id) on delete cascade
 );
 
 create table pessoa( 
@@ -52,13 +52,13 @@ create table loja(
     endereco varchar(100), 
     localidade varchar(30), 
     gestor integer,
-    FOREIGN KEY (gestor) REFERENCES pessoa (id)
+    FOREIGN KEY (gestor) REFERENCES pessoa (id) on delete cascade
 );
 
 create table telefoneloja( 
 	loja integer primary key,
 	numero varchar(10),
-    FOREIGN KEY (loja) REFERENCES loja (codigo)
+    FOREIGN KEY (loja) REFERENCES loja (codigo) on delete cascade
 );
 
 create table reserva( 
@@ -69,14 +69,14 @@ create table reserva(
     valor numeric(4,2), 
     bicicleta integer,
     PRIMARY KEY (noreserva, loja),
-    FOREIGN KEY (loja) REFERENCES loja (codigo),
-    FOREIGN KEY (bicicleta) REFERENCES bicicleta (id)
+    FOREIGN KEY (loja) REFERENCES loja (codigo) on delete cascade,
+    FOREIGN KEY (bicicleta) REFERENCES bicicleta (id) on delete cascade
 );
 
 create table clientereserva( 
 	cliente integer primary key,
 	reserva integer, 
     loja integer,
-    FOREIGN KEY (cliente) REFERENCES pessoa (id),
-    FOREIGN KEY (reserva, loja) REFERENCES reserva (noreserva, loja)
+    FOREIGN KEY (cliente) REFERENCES pessoa (id) on delete cascade,
+    FOREIGN KEY (reserva, loja) REFERENCES reserva (noreserva, loja) on delete cascade
 );
