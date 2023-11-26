@@ -7,9 +7,9 @@ INSERT INTO dispositivo (noserie, latitude, longitude, bateria)
 VALUES
   (1, 38.722, -9.139, 80),
   (2, 40.7128, -74.006, 60),
-  (3, 51.5074, -0.1278, 90),
+  (3, 51.5074, -0.1278, 30),
   (4, 34.0522, -11.243, 75),
-  (5, 37.7749, -12.4194, 85),
+  (5, 37.7749, -12.4194, 45),
   (6, 48.8566, 2.3522, 70),
   (7, -33.8688, 15.2093, 95),
   (8, -22.9068, -43.1729, 50),
@@ -62,12 +62,12 @@ VALUES
 INSERT INTO pessoa (nome, morada, email, telefone, noident, nacionalidade, atrdisc)
 VALUES
   ('João Silva', 'Rua A, Lisboa', 'joao.silva@example.com', '123456789', '123456789ABC', 'Portuguesa', 'C'),
-  ('Maria Santos', 'Avenida B, Porto', 'maria.santos@example.com', '987654321', '987654321DEF', 'Portuguesa', 'G'),
+  ('João Santos', 'Avenida B, Porto', 'joao.santos@example.com', '987654321', '987654321DEF', 'Portuguesa', 'G'),
   ('Carlos Pereira', 'Rua C, Braga', 'carlos.pereira@example.com', '111222333', '111222333GHI', 'Portuguesa', 'C'),
   ('Ana Rodrigues', 'Avenida D, Faro', 'ana.rodrigues@example.com', '444555666', '444555666JKL', 'Portuguesa', 'G'),
   ('Pedro Oliveira', 'Rua E, Coimbra', 'pedro.oliveira@example.com', '777888999', '777888999MNO', 'Portuguesa', 'C'),
-  ('Laura Costa', 'Avenida F, Aveiro', 'laura.costa@example.com', '123123123', '123123123PQR', 'Portuguesa', 'G'),
-  ('Rui Martins', 'Rua G, Setúbal', 'rui.martins@example.com', '456456456', '456456456STU', 'Portuguesa', 'C'),
+  ('João Filipe', 'Avenida F, Aveiro', 'joao.filipe@example.com', '123123123', '123123123PQR', 'Portuguesa', 'G'),
+  ('José Manuel', 'Rua G, Setúbal', 'jose.manuel@example.com', '456456456', '456456456STU', 'Portuguesa', 'C'),
   ('Sofia Pereira', 'Avenida H, Viseu', 'sofia.pereira@example.com', '789789789', '789789789VWX', 'Portuguesa', 'C'),
   ('Miguel Santos', 'Rua I, Évora', 'miguel.santos@example.com', '987987987', '987987987YZA', 'Portuguesa', 'C'),
   ('Inês Almeida', 'Avenida J, Leiria', 'ines.almeida@example.com', '321321321', '321321321ABC', 'Portuguesa', 'C'),
