@@ -3,8 +3,8 @@
  * */
 create table dispositivo( 
 	noserie integer primary key,
-	latitude numeric(4,2), 
-    longitude numeric(4,2), 
+	latitude numeric(6,4), 
+    longitude numeric(6,4), 
     bateria integer CONSTRAINT range_bat CHECK (bateria >= 0 and bateria <= 100)
 );
 
@@ -74,9 +74,10 @@ create table reserva(
 );
 
 create table clientereserva( 
-	cliente integer primary key,
+	cliente integer,
 	reserva integer, 
     loja integer,
+    PRIMARY KEY (cliente, reserva, loja),
     FOREIGN KEY (cliente) REFERENCES pessoa (id) on delete cascade,
     FOREIGN KEY (reserva, loja) REFERENCES reserva (noreserva, loja) on delete cascade
 );
