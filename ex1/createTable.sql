@@ -38,20 +38,21 @@ create table pessoa(
 	id serial primary key,
 	nome varchar(40), 
     morada varchar(150), 
-    email varchar(40) UNIQUE and NOT NULL and LIKE  '_@_', //aqui está mal
-    telefone varchar(30) UNIQUE and NOT NULL, 
-    noident char(12) UNIQUE and NOT NULL, 
+    email varchar(40) unique NOT null check (position ('@' in email)> 0), 
+    telefone varchar(30) UNIQUE NOT NULL, 
+    noident char(12) UNIQUE NOT NULL, 
     nacionalidade varchar(20), 
     atrdisc char(2) CONSTRAINT range_pessoa CHECK (atrdisc IN ('C', 'G')) 
 );
 
+
 create table loja( 
 	codigo integer primary key,
-	email varchar(40) UNIQUE and NOT NULL and LIKE '_@_', 
+	email varchar(40) unique NOT null check (position ('@' in email)> 0), 
     endereco varchar(100), 
     localidade varchar(30), 
     gestor integer,
-    FOREIGN KEY (gestor) REFERENCES pessoa (id),
+    FOREIGN KEY (gestor) REFERENCES pessoa (id)
 );
 
 create table telefoneloja( 
@@ -64,14 +65,13 @@ create table reserva(
 	noreserva serial,
 	loja integer, 
     dtinicio timestamp, 
-    dtfim timestamp CHECK (dtfim >= dtinic OR dtfim IS NULL), 
+    dtfim timestamp CHECK (dtfim >= dtinicio OR dtfim IS NULL), 
     valor numeric(4,2), 
     bicicleta integer,
     PRIMARY KEY (noreserva, loja),
     FOREIGN KEY (loja) REFERENCES loja (codigo),
     FOREIGN KEY (bicicleta) REFERENCES bicicleta (id)
 );
-
 
 create table clientereserva( 
 	cliente integer primary key,
