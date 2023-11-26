@@ -82,3 +82,5 @@ create table telefoneloja(
 	numero varchar(10),
     FOREIGN KEY (loja) REFERENCES loja (codigo)
 );
+
+//teste push 
