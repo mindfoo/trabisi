@@ -19,8 +19,68 @@ Para cada instrução deve ser também apresentada, em comentário, a descriçã
 
 -- (h) Listar as informações (nome, morada, telefone) das pessoas que geriram uma loja e efectuaram reservas.
 
--- (i) Obter o(s) nome(s) do(s) cliente(s) que realizaram reservas numa loja gerida por uma pessoa chamada “João”.
 
--- (j) Crie uma vista LISTAJOAOFILIPE que inclui informação sobre os clientes que efectuaram reservas num loja gerida pelo “João Filipe”. (Nota: O João Filipe é, ele também cliente).
+/*
+ * (i) Obter o(s) nome(s) do(s) cliente(s) que realizaram reservas numa loja gerida por uma pessoa chamada “João”.
+ * 
+ * renomear a tabela pessoa para pessoa_cliente
+ * juntar as tabelas: pessoa, clientereserva, reserva e loja
+ * desta forma, obtemos uma tabela com a informação das reservas de cada cliente
+ * fazer o filtro de gestores chamados joao e obter os ids das lojas que gerem 
+ * fazer o join destas duas para obter os clientes que fizeram reservas nessas lojas
+ * mostrar apenas o nome do cliente
+*/
+ 
+SELECT DISTINCT pessoa_cliente.nome
+FROM pessoa AS pessoa_cliente
+JOIN clientereserva ON pessoa_cliente.id = clientereserva.cliente
+JOIN reserva ON clientereserva.reserva = reserva.noreserva AND clientereserva.loja = reserva.loja
+JOIN loja ON reserva.loja = loja.codigo
+JOIN pessoa AS pessoa_gestor ON loja.gestor = pessoa_gestor.id
+WHERE pessoa_gestor.nome LIKE '%João%';
 
--- (k) Crie uma vista BICICLETASEMNUMEROS que inclui informação sobre as bicicletas e o seu número. A informação disponível deverá ser, o tipo de bicicleta (elétrica e clássica), o seu estado (“em manutenção” e “outras”2) e o número total.
+/*
+ * (j) Crie uma vista LISTAJOAOFILIPE que inclui informação sobre os clientes que efectuaram reservas num loja gerida pelo “João Filipe”. (Nota: O João Filipe é, ele também cliente).
+ * 
+ *  funcionamento igual á alinea (i), sendo que o select será de todos os atributos da pessoa e o gestor é "João Filipe"
+ */
+
+CREATE VIEW LISTAJOAOFILIPE AS
+SELECT DISTINCT pessoa_cliente.nome, pessoa_cliente.morada, pessoa_cliente.email, pessoa_cliente.telefone, pessoa_cliente.noident, pessoa_cliente.nacionalidade, pessoa_cliente.atrdisc
+FROM pessoa AS pessoa_cliente
+JOIN clientereserva ON pessoa_cliente.id = clientereserva.cliente
+JOIN reserva ON clientereserva.reserva = reserva.noreserva AND clientereserva.loja = reserva.loja
+JOIN loja ON reserva.loja = loja.codigo
+JOIN pessoa AS pessoa_gestor ON loja.gestor = pessoa_gestor.id
+WHERE pessoa_gestor.nome = 'João Filipe';
+
+SELECT * FROM LISTAJOAOFILIPE; -- visualisar a vista criada
+
+
+/*
+* (k) Crie uma vista BICICLETASEMNUMEROS que inclui informação sobre as bicicletas e o seu número. A informação disponível deverá ser, o tipo de bicicleta (elétrica e clássica), o seu estado (“em manutenção” e “outras”2) e o número total.
+*
+*	separar em dois dominios tipo e status com o case
+*	fazer a contagem das bicicletas e colocar em total
+*	agrupar por tipo e status
+*
+*/
+
+create view BICICLETASEMNUMEROS as
+SELECT
+  CASE
+    WHEN atrdisc = 'E' THEN 'elétrica'
+    WHEN atrdisc = 'C' THEN 'clássica'
+  END AS tipo,
+  CASE
+    WHEN estado = 'em manutenção' THEN 'em manutenção'
+    ELSE 'outras'
+  END AS status,		-- colocamos o nome status porque se fosse estado o groupby iria separar pelos estados todos das bicicletas
+  COUNT(*) AS total
+FROM bicicleta
+GROUP BY tipo, status;
+
+SELECT * from BICICLETASEMNUMEROS;  -- visualisar a vista criada
+
+
+

@@ -24,7 +24,7 @@ VALUES
   (3, 11.8, 20, 'Modelo3', 'Marca3', 24, 'em manutenção', 'C', 3),
   (4, 9.7, 16, 'Modelo4', 'Marca4', 6, 'livre', 'E', 4),
   (5, 13.2, 22, 'Modelo5', 'Marca5', 18, 'ocupado', 'C', 5),
-  (6, 11.5, 19, 'Modelo6', 'Marca6', 1, 'livre', 'E', 6),
+  (6, 11.5, 19, 'Modelo6', 'Marca6', 1, 'em manutenção', 'E', 6),
   (7, 14.8, 21, 'Modelo7', 'Marca7', 6, 'em manutenção', 'C', 7),
   (8, 10.2, 14, 'Modelo8', 'Marca8', 24, 'ocupado', 'E', 8),
   (9, 12.7, 17, 'Modelo9', 'Marca9', 1, 'livre', 'C', 9),
