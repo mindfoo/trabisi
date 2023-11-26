@@ -24,10 +24,10 @@ Para cada instrução deve ser também apresentada, em comentário, a descriçã
         agrupa os resultados pelo nome
 */
     SELECT nome, COUNT(*) AS nreservas
-    FROM pessoa, clientereserva, reserva
+    FROM pessoa, clientereserva, reserva, loja
     WHERE pessoa.id = clientereserva.id
-    AND clientereserva.id = reserva.noreserva
-    AND reserva.noreserva = 'Lisboa'
+    AND clientereserva.loja = reserva.loja
+    AND loja.localidade = 'Lisboa'
     HAVING COUNT(*) >=  1
     GROUP BY pessoa.nome;
     
@@ -42,8 +42,11 @@ Para cada instrução deve ser também apresentada, em comentário, a descriçã
 
     
 /*    (d) Apresente a marca e o modelo da bicicleta com maior autonomia dentro das bicicletas disponíveis.
-
 */
+    SELECT marca, modelo
+    FROM bicicleta, eletrica
+    WHERE bicicleta.id = eletrica.bicicleta
+    AND autonomia = (SELECT MAX(autonomia) FROM bicicleta);
 
     /*
     *   (e) Obter o número total de reservas para cada loja, bem como o seu código e o número total de reservas.
