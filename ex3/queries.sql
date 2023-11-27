@@ -7,13 +7,31 @@ Para cada instrução deve ser também apresentada, em comentário, a descriçã
       (a) Implemente em PostgreSQL as interrogações pedidas na alínea 2 (Pode escolher uma das soluções que apresentou acima, desde que nesta fase consiga fazer uso de todos os operadores).
 */
 
-  -- 2 (a)
+  -- 2 (a) Pretende-se obter informação (nome, morada e telefone) dos clientes e dos gestores
 
-  -- 2 (b)
+      SELECT nome, morada, telefone
+      FROM pessoa
+      WHERE atrdisc = 'G'
+      OR atrdisc = 'C';
 
-  -- 2 (c)
+  -- 2 (b) Liste, agora, informação (nome, morada e telefone) sobre os clientes que também são gestores.
+
+      SELECT DISTINCT nome, morada, telefone
+      FROM pessoa, clientereserva
+      WHERE pessoa.atrdisc = 'G'
+      AND pessoa.id = clientereserva.cliente;
+
+  -- 2 (c) Pretende-se saber que pessoas (nome, morada e telefone) não estão associadas a nenhuma reserva.
+
+      SELECT DISTINCT pessoa.nome, pessoa.morada, pessoa.telefone
+      FROM pessoa
+      LEFT JOIN clientereserva ON pessoa.id = clientereserva.cliente
+      LEFT JOIN reserva ON clientereserva.cliente = reserva.noreserva
+      WHERE reserva.noreserva IS NULL;
 
   -- 2 (d)
+     
+     
 
   -- 2 (e)
 
@@ -55,16 +73,20 @@ group by pessoa.nome order by total desc;
         faz a contagem das reservas maiores ou iguais a 1
         agrupa os resultados pelo nome
 */
-    SELECT nome, COUNT(*) AS nreservas
+    SELECT nome
     FROM pessoa, clientereserva, reserva, loja
-    WHERE pessoa.id = clientereserva.id
+    WHERE pessoa.id = clientereserva.cliente
     AND clientereserva.loja = reserva.loja
     AND loja.localidade = 'Lisboa'
-    HAVING COUNT(*) >=  1
-    GROUP BY pessoa.nome;
+    GROUP BY pessoa.nome
+   	HAVING COUNT(*) >=  1;
     
     
 /*    (c) Encontre os números de série dos dispositivos com uma percentagem de bateria superior a 50%, e liste-os por ordem crescente da sua percentagem de bateria.
+        
+        Seleciona a coluna noserie da tabela dispositivo
+        seleciona os tupulos onde a bateria é maior que 50%
+        ordena as percentagens da bateria em ordem crescente
 */
 
     SELECT noserie
@@ -74,17 +96,18 @@ group by pessoa.nome order by total desc;
 
     
 /*    (d) Apresente a marca e o modelo da bicicleta com maior autonomia dentro das bicicletas disponíveis.
+        
+        Seleciona a coluna marca e modelo das tabelas bicicleta e eletrica
+        seleciona os tupulos onde existem bicicletas com coluna autonomia
+        ordena as as autonomias em ordem decrescente de forma a que a commaior autonomia fique no primeiro tupulo
+        limita a visualisação dos resultados apenas ao primeiro tupulo
 */
    
     SELECT marca, modelo
-	FROM bicicleta, eletrica
-	where bicicleta.id = eletrica.bicicleta
-	ORDER BY autonomia desc
-	limit 1;
-    
-   
-   	
-   	
+	  FROM bicicleta, eletrica
+	  WHERE bicicleta.id = eletrica.bicicleta
+	  ORDER BY autonomia DESC
+	  LIMIT 1;
 
     /*
     *   (e) Obter o número total de reservas para cada loja, bem como o seu código e o número total de reservas.
