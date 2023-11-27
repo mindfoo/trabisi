@@ -43,10 +43,16 @@ Para cada instrução deve ser também apresentada, em comentário, a descriçã
     
 /*    (d) Apresente a marca e o modelo da bicicleta com maior autonomia dentro das bicicletas disponíveis.
 */
+   
     SELECT marca, modelo
-    FROM bicicleta, eletrica
-    WHERE bicicleta.id = eletrica.bicicleta
-    AND autonomia = (SELECT MAX(autonomia) FROM bicicleta);
+	FROM bicicleta, eletrica
+	where bicicleta.id = eletrica.bicicleta
+	ORDER BY autonomia desc
+	limit 1;
+    
+   
+   	
+   	
 
     /*
     *   (e) Obter o número total de reservas para cada loja, bem como o seu código e o número total de reservas.
