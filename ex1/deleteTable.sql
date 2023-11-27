@@ -3,11 +3,11 @@
  * */
 
 drop table bicicleta cascade;
-drop table classica;
-drop table clientereserva;
-drop table dispositivo;
-drop table eletrica;
+drop table classica cascade;
+drop table clientereserva cascade;
+drop table dispositivo cascade;
+drop table eletrica cascade;
 drop table loja cascade;
-drop table pessoa;
-drop table reserva;
-drop table telefoneloja;
+drop table pessoa cascade;
+drop table reserva cascade;
+drop table telefoneloja cascade;
