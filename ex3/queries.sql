@@ -29,12 +29,9 @@ Para cada instrução deve ser também apresentada, em comentário, a descriçã
       LEFT JOIN reserva ON clientereserva.cliente = reserva.noreserva
       WHERE reserva.noreserva IS NULL;
 
-  -- 2 (d)  Apresente a lista de bicicletas (marca, modelo e estado) que não estão associadas a nenhuma reserva e não são eléctricas.
+  -- 2 (d)
      
-     SELECT marca, modelo, estado
-     FROM bicicleta
-     WHERE bicicleta.atrdisc = 'C'
-     AND bicicleta.estado <> 'ocupado';
+     
 
   -- 2 (e)
 
@@ -55,19 +52,23 @@ WHERE pessoa.nome = 'José Manuel';
 
   -- 2 (j) Apresente a lista do(s) cliente(s) (nome, morada, telefone e nacionalidade), com mais reservas no ano de 2023.
 
-SELECT distinct pessoa.nome, count(*) as total
-FROM pessoa 
-JOIN clientereserva ON pessoa.id = clientereserva.cliente
-JOIN reserva ON clientereserva.reserva = reserva.noreserva AND clientereserva.loja = reserva.loja  and year(reserva.dtinicio) = '2023'
-JOIN loja ON reserva.loja = loja.codigo
-group by pessoa.nome order by total desc;
 
--- falta acabar
+WITH reservas2023 AS (
+select clientereserva.cliente, COUNT(*) AS total_reservas
+from clientereserva
+JOIN reserva ON clientereserva.reserva = reserva.noreserva AND clientereserva.loja = reserva.loja
+where EXTRACT(YEAR FROM reserva.dtinicio) = 2023
+GROUP by clientereserva.cliente)
+select pessoa.nome, pessoa.morada, pessoa.telefone, pessoa.nacionalidade, total_reservas
+from reservas2023  JOIN pessoa ON reservas2023.cliente = pessoa.id
+where reservas2023.total_reservas = (SELECT MAX(total_reservas) FROM reservas2023);
+
 
   -- 2 (k) Apresente o número de clientes de nacionalidade portuguesa e outros. O resultado deve mostrar os atributos nacionalidade e o número de clientes.
      
-
-     
+select pessoa.nacionalidade , COUNT(*) as total
+from pessoa
+group by nacionalidade;    
 
 /*    (b) Obtenha os nomes de todos os clientes que fizeram pelo menos uma reserva numa loja localizada em Lisboa.
 
