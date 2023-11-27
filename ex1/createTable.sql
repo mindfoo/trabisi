@@ -66,7 +66,7 @@ create table reserva(
 	loja integer, 
     dtinicio timestamp, 
     dtfim timestamp CHECK (dtfim >= dtinicio OR dtfim IS NULL), 
-    valor numeric(4,2), 
+    valor numeric(5,2), -- alterado para poder testar valores > 99.99 €
     bicicleta integer,
     PRIMARY KEY (noreserva, loja),
     FOREIGN KEY (loja) REFERENCES loja (codigo) on delete cascade,
