@@ -43,13 +43,34 @@ FROM bicicleta
 WHERE bicicleta.atrdisc = 'C'
 AND bicicleta.estado <> 'ocupado';
 
--- 2(e)
+  -- 2 (e) O conjunto de dispositivos (noserie, latitude e longitude) de bicicletas cujo estado encontra-se em “em manutencao”.
+SELECT distinct noserie, latitude, longitude
+FROM dispositivo d  
+JOIN bicicleta b ON b.id  = d.noserie
+WHERE b.estado = 'em manutenção';
+     	
+  -- 2 (f) O nome dos clientes que realizaram reservas com bicicletas electricas. Apresente informacao sobre os clientes e o numero de reservas.
+SELECT pessoa.nome, COUNT(clientereserva.reserva) AS numero_reservas
+FROM pessoa
+JOIN clientereserva ON pessoa.id = clientereserva.cliente
+JOIN reserva ON clientereserva.reserva = reserva.noreserva
+JOIN bicicleta ON reserva.bicicleta = bicicleta.id
+WHERE bicicleta.atrdisc = 'E'
+GROUP BY pessoa.nome;
 
--- 2(f)
+-- 2(g) Pretende-se obter a lista de clientes que efectuaram reservas com um valor total superior a e 100 (e.g.).
 
--- 2(g)
+SELECT pessoa.nome
+FROM pessoa
+JOIN clientereserva ON pessoa.id = clientereserva.cliente
+JOIN reserva ON clientereserva.reserva = reserva.noreserva 
+WHERE reserva.valor > 100;
 
--- 2(h)
+-- 2(h) Liste informacoes (email, endereco e localidade) sobre lojas e respectivos numeros de telefone associados, incluindo lojas que podem nao ter um numero de telefone associado.
+
+SELECT loja.email, loja.endereco, loja.localidade, telefone.numero
+FROM loja
+LEFT JOIN telefoneloja ON loja.codigo = telefone.loja;
 
 -- 2(i) Para o cliente de nome “José Manuel”, pretende-se a lista de reservas (noreserva e loja) que efectuou, nomeadamente a sua data e as horas de inıcio e de fim, e o preço ofinal desta.
 
