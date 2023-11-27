@@ -79,12 +79,15 @@ from pessoa
 group by nacionalidade;  
      
 
-/*    (b) Obtenha os nomes de todos os clientes que fizeram pelo menos uma reserva numa loja localizada em Lisboa.
-
-        seleciona atributos da tabela pessoa, clientereserva, reserva e conta o numero de reservas
-        acrescenta a condição de forma a que seja filtrado pelo nome do cliente com reservas em lisboa
-        faz a contagem das reservas maiores ou iguais a 1
-        agrupa os resultados pelo nome
+/*
+*
+* (b) Obtenha os nomes de todos os clientes que fizeram pelo menos uma reserva numa loja localizada em Lisboa.
+*
+* seleciona atributos da tabela pessoa, clientereserva, reserva e conta o numero de reservas
+* acrescenta a condição de forma a que seja filtrado pelo nome do cliente com reservas em lisboa
+* faz a contagem das reservas maiores ou iguais a 1
+* agrupa os resultados pelo nome
+*
 */
     SELECT nome
     FROM pessoa, clientereserva, reserva, loja
@@ -96,10 +99,12 @@ group by nacionalidade;
     
     
 /*
-(c) Encontre os números de série dos dispositivos com uma percentagem de bateria superior a 50%, e liste-os por ordem crescente da sua percentagem de bateria.
-Seleciona a coluna noserie da tabela dispositivo
-seleciona os tupulos onde a bateria é maior que 50%
-ordena as percentagens da bateria em ordem crescente
+*
+* (c) Encontre os números de série dos dispositivos com uma percentagem de bateria superior a 50%, e liste-os por ordem crescente da sua percentagem de bateria.
+* Seleciona a coluna noserie da tabela dispositivo
+* seleciona os tupulos onde a bateria é maior que 50%
+* ordena as percentagens da bateria em ordem crescente
+*
 */
 
 SELECT noserie
@@ -108,12 +113,14 @@ WHERE bateria > 50
 ORDER BY bateria;
 
 
-/*  
-(d) Apresente a marca e o modelo da bicicleta com maior autonomia dentro das bicicletas disponíveis.
-Seleciona a coluna marca e modelo das tabelas bicicleta e eletrica
-seleciona os tupulos onde existem bicicletas com coluna autonomia
-ordena as as autonomias em ordem decrescente de forma a que a commaior autonomia fique no primeiro tupulo
-limita a visualisação dos resultados apenas ao primeiro tupulo
+/* 
+* 
+* (d) Apresente a marca e o modelo da bicicleta com maior autonomia dentro das bicicletas disponíveis.
+* Seleciona a coluna marca e modelo das tabelas bicicleta e eletrica
+* seleciona os tupulos onde existem bicicletas com coluna autonomia
+* ordena as as autonomias em ordem decrescente de forma a que a commaior autonomia fique no primeiro tupulo
+* limita a visualisação dos resultados apenas ao primeiro tupulo
+*
 */
 
 SELECT marca, modelo
@@ -123,7 +130,9 @@ ORDER BY autonomia DESC
 LIMIT 1;
 
 /*
-(e) Obter o número total de reservas para cada loja, bem como o seu código e o número total de reservas.
+*
+* (e) Obter o número total de reservas para cada loja, bem como o seu código e o número total de reservas.
+*
 */
 
 SELECT codigo, COUNT(*) AS treservas
@@ -134,13 +143,15 @@ GROUP BY loja.codigo;
 
 /*
 *
-(f) Liste todas as lojas (codigo e email) que tenham efectuado mais de 5 reservas, até á presente data, e enumere-as por ordem *    decrescente do número de reservas (Nota: Faça uso dos operadores/funções de data e tempo).
-
-seleciona atributos da tabela loja e conta numero de reservas
-considera a tabela reserva para reservas feitas numa dada loja
-filtra as reservas até ao dia de hoje
-agrupa os resultados pelo codigo e email da loja
-inclui apenas lojas com mais de 5 reservas
+* (f) Liste todas as lojas (codigo e email) que tenham efectuado mais de 5 reservas, até á presente data, e enumere-as por ordem decrescente do número de reservas 
+* (Nota: Faça uso dos operadores/funções de data e tempo).
+*
+* seleciona atributos da tabela loja e conta numero de reservas
+* considera a tabela reserva para reservas feitas numa dada loja
+* filtra as reservas até ao dia de hoje
+* agrupa os resultados pelo codigo e email da loja
+* inclui apenas lojas com mais de 5 reservas
+*
 */
 
 SELECT codigo, email, COUNT(*) AS nreservas
@@ -152,12 +163,15 @@ HAVING COUNT(*) > 5
 ORDER BY nreservas DESC; 
 
 /*
-* (g) Apresente os nomes dos clientes que efectuaram reservas de bicicletas cujo estado tem como valor “em manutencao” no ano *   *   passado (Nota: Faça uso dos operadores/funções de data e tempo).
+*
+* (g) Apresente os nomes dos clientes que efectuaram reservas de bicicletas cujo estado tem como valor “em manutencao” no ano passado 
+* (Nota: Faça uso dos operadores/funções de data e tempo).
 *   
-*   selecciona nome de pessoa
-*   das pessoas que fizeram reservas
-*   das bicicletas que foram reservadas
-*   onde se apenas consideram clientes e bicicletas em manutenção relativas ao ano passado
+* selecciona nome de pessoa
+* das pessoas que fizeram reservas
+* das bicicletas que foram reservadas
+* onde se apenas consideram clientes e bicicletas em manutenção relativas ao ano passado
+*
 */
 
 SELECT nome
@@ -170,11 +184,13 @@ AND EXTRACT(YEAR FROM reserva.dtinicio) = EXTRACT(YEAR FROM CURRENT_DATE) - 1;
 
 
 /* 
-*   (h) Listar as informações (nome, morada, telefone) das pessoas que geriram uma loja e efectuaram reservas.
 *
-*   seleccionar nome, morada, telefone da tabela pessoa
-*   seleccionar apenas os clientes que fizeram reservas
-*   seleccionar apenas os gestores
+* (h) Listar as informações (nome, morada, telefone) das pessoas que geriram uma loja e efectuaram reservas.
+* 
+* seleccionar nome, morada, telefone da tabela pessoa
+* seleccionar apenas os clientes que fizeram reservas
+* seleccionar apenas os gestores
+*
 */
 
 SELECT distinct nome, morada, telefone 
@@ -184,6 +200,7 @@ WHERE pessoa.id = clientereserva.cliente AND loja.gestor = pessoa.id;
 
 
 /*
+*
 * (i) Obter o(s) nome(s) do(s) cliente(s) que realizaram reservas numa loja gerida por uma pessoa chamada “João”.
 * 
 * renomear a tabela pessoa para pessoa_cliente
@@ -192,6 +209,7 @@ WHERE pessoa.id = clientereserva.cliente AND loja.gestor = pessoa.id;
 * fazer o filtro de gestores chamados joao e obter os ids das lojas que gerem 
 * fazer o join destas duas para obter os clientes que fizeram reservas nessas lojas
 * mostrar apenas o nome do cliente
+*
 */
  
 SELECT DISTINCT pessoa_cliente.nome
@@ -203,9 +221,12 @@ JOIN pessoa AS pessoa_gestor ON loja.gestor = pessoa_gestor.id
 WHERE pessoa_gestor.nome LIKE '%João%';
 
 /*
-* (j) Crie uma vista LISTAJOAOFILIPE que inclui informação sobre os clientes que efectuaram reservas num loja gerida pelo “João Filipe”. (Nota: O João Filipe é, ele também cliente).
+*
+* (j) Crie uma vista LISTAJOAOFILIPE que inclui informação sobre os clientes que efectuaram reservas num loja gerida pelo “João Filipe”. 
+* (Nota: O João Filipe é, ele também cliente).
 * 
 *  funcionamento igual á alinea (i), sendo que o select será de todos os atributos da pessoa e o gestor é "João Filipe"
+*
 */
 
 CREATE VIEW LISTAJOAOFILIPE AS
@@ -221,7 +242,9 @@ SELECT * FROM LISTAJOAOFILIPE; -- visualisar a vista criada
 
 
 /*
-* (k) Crie uma vista BICICLETASEMNUMEROS que inclui informação sobre as bicicletas e o seu número. A informação disponível deverá ser, o tipo de bicicleta (elétrica e clássica), o seu estado (“em manutenção” e “outras”2) e o número total.
+*
+* (k) Crie uma vista BICICLETASEMNUMEROS que inclui informação sobre as bicicletas e o seu número. 
+* A informação disponível deverá ser, o tipo de bicicleta (elétrica e clássica), o seu estado (“em manutenção” e “outras”2) e o número total.
 *
 *	separar em dois dominios tipo e status com o case
 *	fazer a contagem das bicicletas e colocar em total
