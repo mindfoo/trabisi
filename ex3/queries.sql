@@ -18,8 +18,7 @@
 
 SELECT nome, morada, telefone
 FROM pessoa
-WHERE atrdisc = 'G'
-OR atrdisc = 'C';
+WHERE atrdisc = 'G' OR atrdisc = 'C';
 
 -- 2(b) Liste, agora, informação (nome, morada e telefone) sobre os clientes que também são gestores.
 
@@ -174,7 +173,7 @@ ORDER BY nreservas DESC;
 *
 */
 
-SELECT nome
+SELECT distinct nome
 FROM pessoa, clientereserva, reserva, bicicleta
 WHERE pessoa.id = clientereserva.cliente
 AND clientereserva.reserva = reserva.noreserva
