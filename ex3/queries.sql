@@ -3,17 +3,49 @@ Guarde todas num script autónomo de nome “queries.sql”.
 Para cada instrução deve ser também apresentada, em comentário, a descrição do raciocínio seguido. */
 
 
--- (a) Implemente em PostgreSQL as interrogações pedidas na alínea 2 (Pode escolher uma das soluções que apresentou acima, desde que nesta fase consiga fazer uso de todos os operadores).
-
--- (b) Obtenha os nomes de todos os clientes que fizeram pelo menos uma reserva numa loja localizada em Lisboa.
-
--- (c) Encontre os núumeros de série dos dispositivos com uma percentagem de bateria superior a 50%, e liste-os por ordem crescente da sua percentagem de bateria.
-
--- (d) Apresente a marca e o modelo da bicicleta com maior autonomia dentro das bicicletas disponíveis.
-
 /*
       (a) Implemente em PostgreSQL as interrogações pedidas na alínea 2 (Pode escolher uma das soluções que apresentou acima, desde que nesta fase consiga fazer uso de todos os operadores).
 */
+
+  -- 2 (a)
+
+  -- 2 (b)
+
+  -- 2 (c)
+
+  -- 2 (d)
+
+  -- 2 (e)
+
+  -- 2 (f)
+
+  -- 2 (g)
+
+  -- 2 (h)
+
+  -- 2 (i) Para o cliente de nome “José Manuel”, pretende-se a lista de reservas (noreserva e loja) que efectuou, nomeadamente a sua data e as horas de inıcio e de fim, e o preço ofinal desta.
+
+SELECT distinct reserva.noreserva, reserva.loja, reserva.dtinicio, reserva.dtfim, reserva.valor
+FROM pessoa 
+JOIN clientereserva ON pessoa.id = clientereserva.cliente
+JOIN reserva ON clientereserva.reserva = reserva.noreserva AND clientereserva.loja = reserva.loja
+JOIN loja ON reserva.loja = loja.codigo
+WHERE pessoa.nome = 'José Manuel';
+
+  -- 2 (j) Apresente a lista do(s) cliente(s) (nome, morada, telefone e nacionalidade), com mais reservas no ano de 2023.
+
+SELECT distinct pessoa.nome, count(*) as total
+FROM pessoa 
+JOIN clientereserva ON pessoa.id = clientereserva.cliente
+JOIN reserva ON clientereserva.reserva = reserva.noreserva AND clientereserva.loja = reserva.loja  and year(reserva.dtinicio) = '2023'
+JOIN loja ON reserva.loja = loja.codigo
+group by pessoa.nome order by total desc;
+
+-- falta acabar
+
+  -- 2 (k) Apresente o número de clientes de nacionalidade portuguesa e outros. O resultado deve mostrar os atributos nacionalidade e o número de clientes.
+     
+
      
 
 /*    (b) Obtenha os nomes de todos os clientes que fizeram pelo menos uma reserva numa loja localizada em Lisboa.
