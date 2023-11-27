@@ -29,9 +29,12 @@ Para cada instrução deve ser também apresentada, em comentário, a descriçã
       LEFT JOIN reserva ON clientereserva.cliente = reserva.noreserva
       WHERE reserva.noreserva IS NULL;
 
-  -- 2 (d)
+  -- 2 (d)  Apresente a lista de bicicletas (marca, modelo e estado) que não estão associadas a nenhuma reserva e não são eléctricas.
      
-     
+     SELECT marca, modelo, estado
+     FROM bicicleta
+     WHERE bicicleta.atrdisc = 'C'
+     AND bicicleta.estado <> 'ocupado';
 
   -- 2 (e)
 
