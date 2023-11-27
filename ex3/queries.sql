@@ -52,24 +52,24 @@ WHERE b.estado = 'em manutenção';
 SELECT pessoa.nome, COUNT(clientereserva.reserva) AS numero_reservas
 FROM pessoa
 JOIN clientereserva ON pessoa.id = clientereserva.cliente
-JOIN reserva ON clientereserva.reserva = reserva.noreserva
+JOIN reserva ON clientereserva.reserva = reserva.noreserva AND clientereserva.loja = reserva.loja
 JOIN bicicleta ON reserva.bicicleta = bicicleta.id
 WHERE bicicleta.atrdisc = 'E'
 GROUP BY pessoa.nome;
 
 -- 2(g) Pretende-se obter a lista de clientes que efectuaram reservas com um valor total superior a e 100 (e.g.).
 
-SELECT pessoa.nome
+SELECT distinct pessoa.nome
 FROM pessoa
 JOIN clientereserva ON pessoa.id = clientereserva.cliente
-JOIN reserva ON clientereserva.reserva = reserva.noreserva 
+JOIN reserva ON clientereserva.reserva = reserva.noreserva AND clientereserva.loja = reserva.loja 
 WHERE reserva.valor > 100;
 
 -- 2(h) Liste informacoes (email, endereco e localidade) sobre lojas e respectivos numeros de telefone associados, incluindo lojas que podem nao ter um numero de telefone associado.
 
-SELECT loja.email, loja.endereco, loja.localidade, telefone.numero
+SELECT loja.email, loja.endereco, loja.localidade, telefoneloja.numero
 FROM loja
-LEFT JOIN telefoneloja ON loja.codigo = telefone.loja;
+LEFT JOIN telefoneloja ON loja.codigo = telefoneloja.loja;
 
 -- 2(i) Para o cliente de nome “José Manuel”, pretende-se a lista de reservas (noreserva e loja) que efectuou, nomeadamente a sua data e as horas de inıcio e de fim, e o preço ofinal desta.
 
@@ -81,6 +81,9 @@ JOIN loja ON reserva.loja = loja.codigo
 WHERE pessoa.nome = 'José Manuel';
 
 -- 2(j) Apresente a lista do(s) cliente(s) (nome, morada, telefone e nacionalidade), com mais reservas no ano de 2023.
+
+
+-- ***********************ALTERAR*************************************
 
 WITH reservas2023 AS (
 select clientereserva.cliente, COUNT(*) AS total_reservas
@@ -109,7 +112,7 @@ group by nacionalidade;
 * agrupa os resultados pelo nome
 *
 */
-    SELECT nome
+    SELECT distinct nome
     FROM pessoa, clientereserva, reserva, loja
     WHERE pessoa.id = clientereserva.cliente
     AND clientereserva.loja = reserva.loja
@@ -127,7 +130,7 @@ group by nacionalidade;
 *
 */
 
-SELECT noserie
+SELECT noserie, bateria
 FROM dispositivo
 WHERE bateria > 50
 ORDER BY bateria;
@@ -142,6 +145,8 @@ ORDER BY bateria;
 * limita a visualisação dos resultados apenas ao primeiro tupulo
 *
 */
+
+-- ***********************ALTERAR*************************************
 
 SELECT marca, modelo
 FROM bicicleta, eletrica
