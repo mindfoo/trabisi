@@ -6,37 +6,37 @@ create table dispositivo(
 	noserie integer primary key,
 	latitude numeric(6,4), 
     longitude numeric(6,4), 
-    bateria integer CONSTRAINT range_bat CHECK (bateria >= 0 and bateria <= 100);
-)commit;
+    bateria integer constraint range_bat check (bateria >= 0 and bateria <= 100));
+commit;
 
 begin;
 create table bicicleta(
 	id serial primary key,
 	peso numeric(4,2), /* ##,## */
-    raio integer CONSTRAINT range_raio CHECK (raio >= 13 and raio <= 23), 
+    raio integer constraint range_raio check (raio >= 13 and raio <= 23), 
     modelo varchar(20), 
     marca varchar(30), 
-    mudanca integer CONSTRAINT range_mudanca CHECK (mudanca IN (1,6,18,24)), 
-    estado varchar(30) CONSTRAINT range_estado CHECK (estado IN ('livre', 'ocupado', 'em manutenção')), 
-    atrdisc char(2) CONSTRAINT range_disc CHECK (atrdisc IN ('C', 'E')), 
+    mudanca integer constraint range_mudanca check (mudanca in (1,6,18,24)), 
+    estado varchar(30) constraint range_estado check (estado in ('livre', 'ocupado', 'em manutenção')), 
+    atrdisc char(2) constraint range_disc check (atrdisc in ('C', 'E')), 
     dispositivo integer,
-    FOREIGN KEY (dispositivo) references dispositivo (noserie) on delete cascade 
-);commit;
+    foreign key (dispositivo) references dispositivo (noserie) on delete cascade);
+commit;
 
 begin;
 create table classica(
 	bicicleta integer primary key,
-	nomudanca integer CONSTRAINT range_nomudanca CHECK (nomudanca >= 0 and nomudanca <= 5),
-	FOREIGN KEY (bicicleta) references bicicleta (id) on delete cascade
-);commit;
+	nomudanca integer constraint range_nomudanca check (nomudanca >= 0 and nomudanca <= 5),
+	foreign key (bicicleta) references bicicleta (id) on delete cascade);
+commit;
 
 begin;
 create table eletrica( 
 	bicicleta integer primary key,
 	autonomia integer, 
     velocidade integer,
-    FOREIGN KEY (bicicleta) REFERENCES bicicleta (id) on delete cascade
-);commit;
+    foreign key (bicicleta) references bicicleta (id) on delete cascade);
+commit;
 
 begin;
 create table pessoa( 
@@ -47,8 +47,8 @@ create table pessoa(
     telefone varchar(30) UNIQUE NOT NULL, 
     noident char(12) UNIQUE NOT NULL, 
     nacionalidade varchar(20), 
-    atrdisc char(2) CONSTRAINT range_pessoa CHECK (atrdisc IN ('C', 'G')) 
-);commit;
+    atrdisc char(2) constraint range_pessoa check (atrdisc in ('C', 'G')));
+commit;
 
 begin;
 create table loja( 
@@ -57,35 +57,35 @@ create table loja(
     endereco varchar(100), 
     localidade varchar(30), 
     gestor integer,
-    FOREIGN KEY (gestor) REFERENCES pessoa (id) on delete cascade
-);commit;
+    foreign key (gestor) references pessoa (id) on delete cascade);
+commit;
 
 begin;
 create table telefoneloja( 
 	loja integer primary key,
 	numero varchar(10),
-    FOREIGN KEY (loja) REFERENCES loja (codigo) on delete cascade
-);commit;
+    foreign key (loja) references loja (codigo) on delete cascade);
+commit;
 
 begin;
 create table reserva( 
 	noreserva serial,
 	loja integer, 
     dtinicio timestamp, 
-    dtfim timestamp CHECK (dtfim >= dtinicio OR dtfim IS NULL), 
+    dtfim timestamp check (dtfim >= dtinicio OR dtfim is null), 
     valor numeric(5,2), -- alterado para poder testar valores > 99.99 €
     bicicleta integer,
-    PRIMARY KEY (noreserva, loja),
-    FOREIGN KEY (loja) REFERENCES loja (codigo) on delete cascade,
-    FOREIGN KEY (bicicleta) REFERENCES bicicleta (id) on delete cascade
-);commit;
+    primary key (noreserva, loja),
+    foreign key (loja) references loja (codigo) on delete cascade,
+    foreign key (bicicleta) references bicicleta (id) on delete cascade);
+commit;
 
 begin;
 create table clientereserva( 
 	cliente integer,
 	reserva integer, 
     loja integer,
-    PRIMARY KEY (cliente, reserva, loja),
-    FOREIGN KEY (cliente) REFERENCES pessoa (id) on delete cascade,
-    FOREIGN KEY (reserva, loja) REFERENCES reserva (noreserva, loja) on delete cascade
-);commit;
+    primary key (cliente, reserva, loja),
+    foreign key (cliente) references pessoa (id) on delete cascade,
+    foreign key (reserva, loja) references reserva (noreserva, loja) on delete cascade);
+commit;
