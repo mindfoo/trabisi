@@ -92,7 +92,7 @@ where pessoa.nome = 'José Manuel';
 
 
 -- 2(j) Apresente a lista do(s) cliente(s) (nome, morada, telefone e nacionalidade), com mais reservas no ano de 2023.
-select pessoa.nome, pessoa.morada, pessoa.telefone, pessoa.nacionalidade, count(*) as nmr_reservas
+select pessoa.nome, pessoa.morada, pessoa.telefone, pessoa.nacionalidade
 from pessoa
 join clientereserva on pessoa.id = clientereserva.cliente
 join reserva on clientereserva.reserva = reserva.noreserva and clientereserva.loja = reserva.loja
@@ -179,7 +179,7 @@ where eletrica.autonomia =(
 * (e) Obter o número total de reservas para cada loja, bem como o seu código e o número total de reservas.
 *
 */
-select codigo, count(*) as treservas
+select codigo, count(*) as total_reservas
 from loja
 join reserva on loja.codigo = reserva.loja
 group by loja.codigo;
