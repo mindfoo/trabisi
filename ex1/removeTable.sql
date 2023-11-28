@@ -1,8 +1,8 @@
 /*
  * Delete de dados das tabelas criadas.
  * */
- 
- begin;
+
+begin;
 delete from bicicleta
 commit;
 
