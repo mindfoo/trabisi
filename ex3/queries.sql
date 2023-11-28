@@ -82,18 +82,23 @@ WHERE pessoa.nome = 'José Manuel';
 
 -- 2(j) Apresente a lista do(s) cliente(s) (nome, morada, telefone e nacionalidade), com mais reservas no ano de 2023.
 
-
--- ***********************ALTERAR*************************************
-
-WITH reservas2023 AS (
-select clientereserva.cliente, COUNT(*) AS total_reservas
-from clientereserva
-JOIN reserva ON clientereserva.reserva = reserva.noreserva AND clientereserva.loja = reserva.loja
+select pessoa.nome, pessoa.morada, pessoa.telefone, pessoa.nacionalidade, COUNT(*) AS nmr_reservas
+from pessoa
+join clientereserva ON pessoa.id = clientereserva.cliente
+join reserva ON clientereserva.reserva = reserva.noreserva AND clientereserva.loja = reserva.loja
 where EXTRACT(YEAR FROM reserva.dtinicio) = 2023
-GROUP by clientereserva.cliente)
-select pessoa.nome, pessoa.morada, pessoa.telefone, pessoa.nacionalidade, total_reservas
-from reservas2023  JOIN pessoa ON reservas2023.cliente = pessoa.id
-where reservas2023.total_reservas = (SELECT MAX(total_reservas) FROM reservas2023);
+GROUP by pessoa.id
+having COUNT(*) = (
+        SELECT MAX(nmr_reservas)
+        FROM (
+            SELECT COUNT(*) AS nmr_reservas
+            FROM clientereserva
+            JOIN reserva ON clientereserva.reserva = reserva.noreserva AND clientereserva.loja = reserva.loja
+            WHERE EXTRACT(YEAR FROM reserva.dtinicio) = 2023
+            GROUP BY clientereserva.cliente
+        ) AS subquery
+    );
+
 
 -- 2 (k) Apresente o número de clientes de nacionalidade portuguesa e outros. O resultado deve mostrar os atributos nacionalidade e o número de clientes.
      
