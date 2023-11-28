@@ -9,7 +9,7 @@ create table dispositivo(
 );
 
 create table bicicleta(
-	id integer primary key,
+	id serial primary key,
 	peso numeric(4,2), /* ##,## */
     raio integer CONSTRAINT range_raio CHECK (raio >= 13 and raio <= 23), 
     modelo varchar(20), 
