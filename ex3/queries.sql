@@ -149,10 +149,11 @@ ORDER BY bateria;
 -- ***********************ALTERAR*************************************
 
 SELECT marca, modelo
-FROM bicicleta, eletrica
-WHERE bicicleta.id = eletrica.bicicleta
-ORDER BY autonomia DESC
-LIMIT 1;
+FROM bicicleta
+JOIN eletrica ON bicicleta.id = eletrica.bicicleta
+WHERE eletrica.autonomia =(
+    SELECT MAX(autonomia)
+    FROM eletrica);
 
 /*
 *
