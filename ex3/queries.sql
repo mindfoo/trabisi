@@ -146,7 +146,6 @@ ORDER BY bateria;
 *
 */
 
--- ***********************ALTERAR*************************************
 
 SELECT marca, modelo
 FROM bicicleta
