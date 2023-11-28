@@ -9,12 +9,14 @@
 
 -- (a)
 begin;
-ALTER TABLE bicicleta drop constraint range_mudanca;
-ALTER TABLE bicicleta ADD constraint range_mudanca check (mudanca in (1,6,18,24,40));
-COMMIT;
+alter table bicicleta drop constraint range_mudanca;
+alter table bicicleta add constraint range_mudanca check (mudanca in (1,6,18,24,40));
+commit;
 
 -- (b)
 
+begin;
 update bicicleta 
 set mudanca = 40
 where marca = 'Marca-A' and modelo = 'Modelo-B'; 
+commit;
