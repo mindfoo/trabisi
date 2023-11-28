@@ -15,96 +15,118 @@
 */
 
 -- 2(a) Pretende-se obter informação (nome, morada e telefone) dos clientes e dos gestores
+begin;
+select nome, morada, telefone
+from pessoa
+where atrdisc = 'G' or atrdisc = 'C';
+commit;
 
-SELECT nome, morada, telefone
-FROM pessoa
-WHERE atrdisc = 'G' OR atrdisc = 'C';
 
 -- 2(b) Liste, agora, informação (nome, morada e telefone) sobre os clientes que também são gestores.
+begin;
+select distinct nome, morada, telefone
+from pessoa, clientereserva
+where pessoa.atrdisc = 'G'
+and pessoa.id = clientereserva.cliente;
+commit;
 
-SELECT DISTINCT nome, morada, telefone
-FROM pessoa, clientereserva
-WHERE pessoa.atrdisc = 'G'
-AND pessoa.id = clientereserva.cliente;
 
 -- 2(c) Pretende-se saber que pessoas (nome, morada e telefone) não estão associadas a nenhuma reserva.
+begin;
+select distinct pessoa.nome, pessoa.morada, pessoa.telefone
+from pessoa
+left join clientereserva on pessoa.id = clientereserva.cliente
+left join reserva on clientereserva.cliente = reserva.noreserva
+where reserva.noreserva is null;
+commit;
 
-SELECT DISTINCT pessoa.nome, pessoa.morada, pessoa.telefone
-FROM pessoa
-LEFT JOIN clientereserva ON pessoa.id = clientereserva.cliente
-LEFT JOIN reserva ON clientereserva.cliente = reserva.noreserva
-WHERE reserva.noreserva IS NULL;
 
 -- 2(d)  Apresente a lista de bicicletas (marca, modelo e estado) que não estão associadas a nenhuma reserva e não são eléctricas.
+begin;
+select marca, modelo, estado
+from bicicleta
+where bicicleta.atrdisc = 'C'
+and bicicleta.estado <> 'ocupado';
+commit;
 
-SELECT marca, modelo, estado
-FROM bicicleta
-WHERE bicicleta.atrdisc = 'C'
-AND bicicleta.estado <> 'ocupado';
 
-  -- 2 (e) O conjunto de dispositivos (noserie, latitude e longitude) de bicicletas cujo estado encontra-se em “em manutencao”.
-SELECT distinct noserie, latitude, longitude
-FROM dispositivo d  
-JOIN bicicleta b ON b.id  = d.noserie
-WHERE b.estado = 'em manutenção';
-     	
-  -- 2 (f) O nome dos clientes que realizaram reservas com bicicletas electricas. Apresente informacao sobre os clientes e o numero de reservas.
-SELECT pessoa.nome, COUNT(clientereserva.reserva) AS numero_reservas
-FROM pessoa
-JOIN clientereserva ON pessoa.id = clientereserva.cliente
-JOIN reserva ON clientereserva.reserva = reserva.noreserva AND clientereserva.loja = reserva.loja
-JOIN bicicleta ON reserva.bicicleta = bicicleta.id
-WHERE bicicleta.atrdisc = 'E'
-GROUP BY pessoa.nome;
+-- 2 (e) O conjunto de dispositivos (noserie, latitude e longitude) de bicicletas cujo estado encontra-se em “em manutencao”.
+begin;
+select distinct noserie, latitude, longitude
+from dispositivo  
+join bicicleta on bicicleta.id = dispositivo.noserie
+where bicicleta.estado = 'em manutenção';
+commit;     
+
+
+-- 2 (f) O nome dos clientes que realizaram reservas com bicicletas electricas. Apresente informacao sobre os clientes e o numero de reservas.
+begin;
+select pessoa.nome, count(clientereserva.reserva) as numero_reservas
+from pessoa
+join clientereserva on pessoa.id = clientereserva.cliente
+join reserva on clientereserva.reserva = reserva.noreserva and clientereserva.loja = reserva.loja
+join bicicleta on reserva.bicicleta = bicicleta.id
+where bicicleta.atrdisc = 'E'
+group by pessoa.nome;
+commit;
+
 
 -- 2(g) Pretende-se obter a lista de clientes que efectuaram reservas com um valor total superior a e 100 (e.g.).
+begin;
+select distinct pessoa.nome
+from pessoa
+join clientereserva on pessoa.id = clientereserva.cliente
+join reserva on clientereserva.reserva = reserva.noreserva and clientereserva.loja = reserva.loja 
+where reserva.valor > 100;
+commit;
 
-SELECT distinct pessoa.nome
-FROM pessoa
-JOIN clientereserva ON pessoa.id = clientereserva.cliente
-JOIN reserva ON clientereserva.reserva = reserva.noreserva AND clientereserva.loja = reserva.loja 
-WHERE reserva.valor > 100;
 
 -- 2(h) Liste informacoes (email, endereco e localidade) sobre lojas e respectivos numeros de telefone associados, incluindo lojas que podem nao ter um numero de telefone associado.
+begin;
+select loja.email, loja.endereco, loja.localidade, telefoneloja.numero
+from loja
+left join telefoneloja on loja.codigo = telefoneloja.loja;
+commit;
 
-SELECT loja.email, loja.endereco, loja.localidade, telefoneloja.numero
-FROM loja
-LEFT JOIN telefoneloja ON loja.codigo = telefoneloja.loja;
 
 -- 2(i) Para o cliente de nome “José Manuel”, pretende-se a lista de reservas (noreserva e loja) que efectuou, nomeadamente a sua data e as horas de inıcio e de fim, e o preço ofinal desta.
+begin;
+select distinct reserva.noreserva, reserva.loja, reserva.dtinicio, reserva.dtfim, reserva.valor
+from pessoa 
+join clientereserva on pessoa.id = clientereserva.cliente
+join reserva on clientereserva.reserva = reserva.noreserva and clientereserva.loja = reserva.loja
+join loja on reserva.loja = loja.codigo
+where pessoa.nome = 'José Manuel';
+commit;
 
-SELECT distinct reserva.noreserva, reserva.loja, reserva.dtinicio, reserva.dtfim, reserva.valor
-FROM pessoa 
-JOIN clientereserva ON pessoa.id = clientereserva.cliente
-JOIN reserva ON clientereserva.reserva = reserva.noreserva AND clientereserva.loja = reserva.loja
-JOIN loja ON reserva.loja = loja.codigo
-WHERE pessoa.nome = 'José Manuel';
 
 -- 2(j) Apresente a lista do(s) cliente(s) (nome, morada, telefone e nacionalidade), com mais reservas no ano de 2023.
-
-select pessoa.nome, pessoa.morada, pessoa.telefone, pessoa.nacionalidade, COUNT(*) AS nmr_reservas
+begin;
+select pessoa.nome, pessoa.morada, pessoa.telefone, pessoa.nacionalidade, count(*) as nmr_reservas
 from pessoa
-join clientereserva ON pessoa.id = clientereserva.cliente
-join reserva ON clientereserva.reserva = reserva.noreserva AND clientereserva.loja = reserva.loja
-where EXTRACT(YEAR FROM reserva.dtinicio) = 2023
-GROUP by pessoa.id
-having COUNT(*) = (
-        SELECT MAX(nmr_reservas)
-        FROM (
-            SELECT COUNT(*) AS nmr_reservas
-            FROM clientereserva
-            JOIN reserva ON clientereserva.reserva = reserva.noreserva AND clientereserva.loja = reserva.loja
-            WHERE EXTRACT(YEAR FROM reserva.dtinicio) = 2023
-            GROUP BY clientereserva.cliente
-        ) AS subquery
-    );
+join clientereserva on pessoa.id = clientereserva.cliente
+join reserva on clientereserva.reserva = reserva.noreserva and clientereserva.loja = reserva.loja
+where extract(year from reserva.dtinicio) = 2023
+group by pessoa.id
+having count(*) = (
+  select max(nmr_reservas)
+  from (
+    select count(*) as nmr_reservas
+    from clientereserva
+    join reserva on clientereserva.reserva = reserva.noreserva and clientereserva.loja = reserva.loja
+    where extract(year from reserva.dtinicio) = 2023
+    group by clientereserva.cliente
+  ) as subquery
+);
+commit;
 
 
 -- 2 (k) Apresente o número de clientes de nacionalidade portuguesa e outros. O resultado deve mostrar os atributos nacionalidade e o número de clientes.
-     
-select pessoa.nacionalidade , COUNT(*) as total
+begin;
+select pessoa.nacionalidade , count(*) as total
 from pessoa
-group by nacionalidade;  
+group by nacionalidade;
+commit;  
      
 
 /*
@@ -117,13 +139,15 @@ group by nacionalidade;
 * agrupa os resultados pelo nome
 *
 */
-    SELECT distinct nome
-    FROM pessoa, clientereserva, reserva, loja
-    WHERE pessoa.id = clientereserva.cliente
-    AND clientereserva.loja = reserva.loja
-    AND loja.localidade = 'Lisboa'
-    GROUP BY pessoa.nome
-   	HAVING COUNT(*) >=  1;
+begin;
+select distinct nome
+from pessoa, clientereserva, reserva, loja
+where pessoa.id = clientereserva.cliente
+and clientereserva.loja = reserva.loja
+and loja.localidade = 'Lisboa'
+group by pessoa.nome
+having count(*) >=  1;
+commit;
     
     
 /*
@@ -134,11 +158,12 @@ group by nacionalidade;
 * ordena as percentagens da bateria em ordem crescente
 *
 */
-
-SELECT noserie, bateria
-FROM dispositivo
-WHERE bateria > 50
-ORDER BY bateria;
+begin;
+select noserie, bateria
+from dispositivo
+where bateria > 50
+order by bateria;
+commit;
 
 
 /* 
@@ -150,25 +175,27 @@ ORDER BY bateria;
 * limita a visualisação dos resultados apenas ao primeiro tupulo
 *
 */
+begin;
+select marca, modelo
+from bicicleta
+join eletrica on bicicleta.id = eletrica.bicicleta
+where eletrica.autonomia =(
+    select max(autonomia)
+    from eletrica);
+commit;
 
-
-SELECT marca, modelo
-FROM bicicleta
-JOIN eletrica ON bicicleta.id = eletrica.bicicleta
-WHERE eletrica.autonomia =(
-    SELECT MAX(autonomia)
-    FROM eletrica);
 
 /*
 *
 * (e) Obter o número total de reservas para cada loja, bem como o seu código e o número total de reservas.
 *
 */
-
-SELECT codigo, COUNT(*) AS treservas
-FROM loja
-JOIN reserva ON loja.codigo = reserva.loja
-GROUP BY loja.codigo;
+begin;
+select codigo, count(*) as treservas
+from loja
+join reserva on loja.codigo = reserva.loja
+group by loja.codigo;
+commit;
 
 
 /*
@@ -183,14 +210,16 @@ GROUP BY loja.codigo;
 * inclui apenas lojas com mais de 5 reservas
 *
 */
+begin;
+select codigo, email, count(*) as nreservas
+from loja
+join reserva on loja.codigo = reserva.loja
+where reserva.dtinicio <= current_date
+group by loja.codigo, loja.email
+having count(*) > 5
+order by nreservas desc; 
+commit;
 
-SELECT codigo, email, COUNT(*) AS nreservas
-FROM loja
-JOIN reserva ON loja.codigo = reserva.loja
-WHERE reserva.dtinicio <= CURRENT_DATE
-GROUP BY loja.codigo, loja.email
-HAVING COUNT(*) > 5
-ORDER BY nreservas DESC; 
 
 /*
 *
@@ -203,14 +232,15 @@ ORDER BY nreservas DESC;
 * onde se apenas consideram clientes e bicicletas em manutenção relativas ao ano passado
 *
 */
-
-SELECT distinct nome
-FROM pessoa, clientereserva, reserva, bicicleta
-WHERE pessoa.id = clientereserva.cliente
-AND clientereserva.reserva = reserva.noreserva
-AND reserva.bicicleta = bicicleta.id
-AND bicicleta.estado = 'em manutenção'
-AND EXTRACT(YEAR FROM reserva.dtinicio) = EXTRACT(YEAR FROM CURRENT_DATE) - 1;
+begin;
+select distinct nome
+from pessoa, clientereserva, reserva, bicicleta
+where pessoa.id = clientereserva.cliente
+and clientereserva.reserva = reserva.noreserva
+and reserva.bicicleta = bicicleta.id
+and bicicleta.estado = 'em manutenção'
+and extract(year from reserva.dtinicio) = extract(year from current_date) - 1;
+commit;
 
 
 /* 
@@ -222,11 +252,11 @@ AND EXTRACT(YEAR FROM reserva.dtinicio) = EXTRACT(YEAR FROM CURRENT_DATE) - 1;
 * seleccionar apenas os gestores
 *
 */
-
-SELECT distinct nome, morada, telefone 
-FROM pessoa, clientereserva, loja
-WHERE pessoa.id = clientereserva.cliente AND loja.gestor = pessoa.id;
-
+begin;
+select distinct nome, morada, telefone 
+from pessoa, clientereserva, loja
+where pessoa.id = clientereserva.cliente and loja.gestor = pessoa.id;
+commit;
 
 
 /*
@@ -241,14 +271,16 @@ WHERE pessoa.id = clientereserva.cliente AND loja.gestor = pessoa.id;
 * mostrar apenas o nome do cliente
 *
 */
- 
-SELECT DISTINCT pessoa_cliente.nome
-FROM pessoa AS pessoa_cliente
-JOIN clientereserva ON pessoa_cliente.id = clientereserva.cliente
-JOIN reserva ON clientereserva.reserva = reserva.noreserva AND clientereserva.loja = reserva.loja
-JOIN loja ON reserva.loja = loja.codigo
-JOIN pessoa AS pessoa_gestor ON loja.gestor = pessoa_gestor.id
-WHERE pessoa_gestor.nome LIKE '%João%';
+begin;
+select distinct pessoa_cliente.nome
+from pessoa as pessoa_cliente
+join clientereserva on pessoa_cliente.id = clientereserva.cliente
+join reserva on clientereserva.reserva = reserva.noreserva and clientereserva.loja = reserva.loja
+join loja on reserva.loja = loja.codigo
+join pessoa as pessoa_gestor on loja.gestor = pessoa_gestor.id
+where pessoa_gestor.nome like '%João%';
+commit;
+
 
 /*
 *
@@ -258,22 +290,23 @@ WHERE pessoa_gestor.nome LIKE '%João%';
 *  funcionamento igual á alinea (i), sendo que o select será de todos os atributos da pessoa e o gestor é "João Filipe"
 *
 */
+begin;
+create view LISTAJOAOFILIPE as
+select distinct pessoa_cliente.nome, pessoa_cliente.morada, pessoa_cliente.email, pessoa_cliente.telefone, pessoa_cliente.noident, pessoa_cliente.nacionalidade, pessoa_cliente.atrdisc
+from pessoa as pessoa_cliente
+join clientereserva on pessoa_cliente.id = clientereserva.cliente
+join reserva on clientereserva.reserva = reserva.noreserva and clientereserva.loja = reserva.loja
+join loja on reserva.loja = loja.codigo
+join pessoa as pessoa_gestor on loja.gestor = pessoa_gestor.id
+where pessoa_gestor.nome = 'João Filipe';
+commit;
 
-CREATE VIEW LISTAJOAOFILIPE AS
-SELECT DISTINCT pessoa_cliente.nome, pessoa_cliente.morada, pessoa_cliente.email, pessoa_cliente.telefone, pessoa_cliente.noident, pessoa_cliente.nacionalidade, pessoa_cliente.atrdisc
-FROM pessoa AS pessoa_cliente
-JOIN clientereserva ON pessoa_cliente.id = clientereserva.cliente
-JOIN reserva ON clientereserva.reserva = reserva.noreserva AND clientereserva.loja = reserva.loja
-JOIN loja ON reserva.loja = loja.codigo
-JOIN pessoa AS pessoa_gestor ON loja.gestor = pessoa_gestor.id
-WHERE pessoa_gestor.nome = 'João Filipe';
-
-SELECT * FROM LISTAJOAOFILIPE; -- visualisar a vista criada
+select * from LISTAJOAOFILIPE; -- visualisar a vista criada
 
 
 /*
 *
-* (k) Crie uma vista BICICLETASEMNUMEROS que inclui informação sobre as bicicletas e o seu número. 
+* (k) Crie uma vista BICICLETasEMNUMEROS que inclui informação sobre as bicicletas e o seu número. 
 * A informação disponível deverá ser, o tipo de bicicleta (elétrica e clássica), o seu estado (“em manutenção” e “outras”2) e o número total.
 *
 *	separar em dois dominios tipo e status com o case
@@ -281,22 +314,20 @@ SELECT * FROM LISTAJOAOFILIPE; -- visualisar a vista criada
 *	agrupar por tipo e status
 *
 */
-
+begin;
 create view BICICLETASEMNUMEROS as
-SELECT
-  CASE
-    WHEN atrdisc = 'E' THEN 'elétrica'
-    WHEN atrdisc = 'C' THEN 'clássica'
-  END AS tipo,
-  CASE
-    WHEN estado = 'em manutenção' THEN 'em manutenção'
-    ELSE 'outras'
-  END AS status,		-- colocamos o nome status porque se fosse estado o groupby iria separar pelos estados todos das bicicletas
-  COUNT(*) AS total
-FROM bicicleta
-GROUP BY tipo, status;
+select
+  case
+    when atrdisc = 'E' then 'elétrica'
+    when atrdisc = 'C' then 'clássica'
+  end as tipo,
+  case
+    when estado = 'em manutenção' then 'em manutenção'
+    else 'outras'
+  end as status,		-- colocamos o nome status porque se fosse estado o groupby iria separar pelos estados todos das bicicletas
+  count(*) as total
+from bicicleta
+group by tipo, status;
+commit;
 
-SELECT * from BICICLETASEMNUMEROS;  -- visualisar a vista criada
-
-
-
+select * from BICICLETASEMNUMEROS;  -- visualisar a vista criada
