@@ -3,37 +3,37 @@
  * */
 
 begin;
-drop table bicicleta cascade
+drop table bicicleta cascade;
 commit;
 
 begin;
-drop table classica cascade
+drop table classica cascade;
 commit;
 
 begin;
-drop table clientereserva cascade
+drop table clientereserva cascade;
 commit;
 
 begin;
-drop table dispositivo cascade
+drop table dispositivo cascade;
 commit;
 
 begin;
-drop table eletrica cascade
+drop table eletrica cascade;
 commit;
 
 begin;
-drop table loja cascade
+drop table loja cascade;
 commit;
 
 begin;
-drop table pessoa cascade
+drop table pessoa cascade;
 commit;
 
 begin;
-drop table reserva cascade
+drop table reserva cascade;
 commit;
 
 begin;
-drop table telefoneloja cascade
+drop table telefoneloja cascade;
 commit;

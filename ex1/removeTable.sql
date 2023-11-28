@@ -3,37 +3,37 @@
  * */
  
  begin;
-delete from bicicleta
+delete from bicicleta;
 commit;
 
 begin;
-delete from classica
+delete from classica;
 commit;
 
 begin;
-delete from clientereserva
+delete from clientereserva;
 commit;
 
 begin;
-delete from dispositivo
+delete from dispositivo;
 commit;
 
 begin;
-delete from eletrica
+delete from eletrica;
 commit;
 
 begin;
-delete from loja
+delete from loja;
 commit;
 
 begin;
-delete from pessoa
+delete from pessoa;
 commit;
 
 begin;
-delete from reserva
+delete from reserva;
 commit;
 
 begin;
-delete from telefoneloja
+delete from telefoneloja;
 commit;

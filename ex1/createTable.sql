@@ -6,7 +6,7 @@ create table dispositivo(
 	noserie integer primary key,
 	latitude numeric(6,4), 
     longitude numeric(6,4), 
-    bateria integer CONSTRAINT range_bat CHECK (bateria >= 0 and bateria <= 100)
+    bateria integer CONSTRAINT range_bat CHECK (bateria >= 0 and bateria <= 100);
 )commit;
 
 begin;
@@ -21,14 +21,14 @@ create table bicicleta(
     atrdisc char(2) CONSTRAINT range_disc CHECK (atrdisc IN ('C', 'E')), 
     dispositivo integer,
     FOREIGN KEY (dispositivo) references dispositivo (noserie) on delete cascade 
-)commit;
+);commit;
 
 begin;
 create table classica(
 	bicicleta integer primary key,
 	nomudanca integer CONSTRAINT range_nomudanca CHECK (nomudanca >= 0 and nomudanca <= 5),
 	FOREIGN KEY (bicicleta) references bicicleta (id) on delete cascade
-)commit;
+);commit;
 
 begin;
 create table eletrica( 
@@ -36,7 +36,7 @@ create table eletrica(
 	autonomia integer, 
     velocidade integer,
     FOREIGN KEY (bicicleta) REFERENCES bicicleta (id) on delete cascade
-)commit;
+);commit;
 
 begin;
 create table pessoa( 
@@ -48,7 +48,7 @@ create table pessoa(
     noident char(12) UNIQUE NOT NULL, 
     nacionalidade varchar(20), 
     atrdisc char(2) CONSTRAINT range_pessoa CHECK (atrdisc IN ('C', 'G')) 
-)commit;
+);commit;
 
 begin;
 create table loja( 
@@ -58,14 +58,14 @@ create table loja(
     localidade varchar(30), 
     gestor integer,
     FOREIGN KEY (gestor) REFERENCES pessoa (id) on delete cascade
-)commit;
+);commit;
 
 begin;
 create table telefoneloja( 
 	loja integer primary key,
 	numero varchar(10),
     FOREIGN KEY (loja) REFERENCES loja (codigo) on delete cascade
-)commit;
+);commit;
 
 begin;
 create table reserva( 
@@ -78,7 +78,7 @@ create table reserva(
     PRIMARY KEY (noreserva, loja),
     FOREIGN KEY (loja) REFERENCES loja (codigo) on delete cascade,
     FOREIGN KEY (bicicleta) REFERENCES bicicleta (id) on delete cascade
-)commit;
+);commit;
 
 begin;
 create table clientereserva( 
@@ -88,4 +88,4 @@ create table clientereserva(
     PRIMARY KEY (cliente, reserva, loja),
     FOREIGN KEY (cliente) REFERENCES pessoa (id) on delete cascade,
     FOREIGN KEY (reserva, loja) REFERENCES reserva (noreserva, loja) on delete cascade
-)commit;
+);commit;
