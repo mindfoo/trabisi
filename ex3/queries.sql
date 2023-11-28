@@ -112,13 +112,6 @@ having count(*) = (
 
 
 -- 2 (k) Apresente o número de clientes de nacionalidade portuguesa e outros. O resultado deve mostrar os atributos nacionalidade e o número de clientes.
-<<<<<<< Updated upstream
-select pessoa.nacionalidade , count(*) as total
-from pessoa
-group by nacionalidade;
-  
-     
-=======
 select
   case
     when nacionalidade = 'Portuguesa' then 'Portuguesa'
@@ -127,7 +120,6 @@ select
   count(*) as total
   from pessoa
 group by new_nacionalidade;
->>>>>>> Stashed changes
 
 /*
 *
