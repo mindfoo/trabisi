@@ -2,12 +2,38 @@
  * Delete de dados das tabelas criadas.
  * */
  
-delete from bicicleta;
-delete from classica;
-delete from clientereserva;
-delete from dispositivo;
-delete from eletrica;
-delete from loja;
-delete from pessoa;
-delete from reserva;
-delete from telefoneloja;
+ begin;
+delete from bicicleta
+commit;
+
+begin;
+delete from classica
+commit;
+
+begin;
+delete from clientereserva
+commit;
+
+begin;
+delete from dispositivo
+commit;
+
+begin;
+delete from eletrica
+commit;
+
+begin;
+delete from loja
+commit;
+
+begin;
+delete from pessoa
+commit;
+
+begin;
+delete from reserva
+commit;
+
+begin;
+delete from telefoneloja
+commit;

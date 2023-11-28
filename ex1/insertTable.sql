@@ -3,6 +3,7 @@
  * */
 
 -- Inserir dados na tabela dispositivo
+begin;
 INSERT INTO dispositivo (noserie, latitude, longitude, bateria)
 VALUES
   (1, 38.722, -9.139, 80),
@@ -14,9 +15,11 @@ VALUES
   (7, -33.8688, 15.2093, 95),
   (8, -22.9068, -43.1729, 50),
   (9, 35.6895, 13.6917, 65),
-  (10, 41.9028, 12.4964, 40);
+  (10, 41.9028, 12.4964, 40)
+  commit;
 
 -- Inserir dados na tabela bicicleta
+begin;
 INSERT INTO bicicleta (id, peso, raio, modelo, marca, mudanca, estado, atrdisc, dispositivo)
 VALUES
   (1, 10.5, 15, 'Modelo-A', 'Marca-A', 6, 'livre', 'C', 1),
@@ -28,9 +31,11 @@ VALUES
   (7, 14.8, 21, 'Modelo-C', 'Marca-C', 6, 'em manutenção', 'C', 7),
   (8, 10.2, 14, 'Modelo-B', 'Marca-A', 24, 'ocupado', 'E', 8),
   (9, 12.7, 17, 'Modelo-A', 'Marca-B', 1, 'livre', 'C', 9),
-  (10, 14.5, 23, 'Modelo-B', 'Marca-A', 18, 'ocupado', 'E', 10);
+  (10, 14.5, 23, 'Modelo-B', 'Marca-A', 18, 'ocupado', 'E', 10)
+  commit;
 
 -- Inserir dados na tabela classica
+begin;
 INSERT INTO classica (bicicleta, nomudanca)
 VALUES
   (1, 2),
@@ -42,9 +47,11 @@ VALUES
   (7, 2),
   (8, 4),
   (9, 1),
-  (10, 3);
+  (10, 3)
+  commit;
 
 -- Inserir dados na tabela eletrica
+begin;
 INSERT INTO eletrica (bicicleta, autonomia, velocidade)
 VALUES
   (1, 50, 25),
@@ -56,9 +63,11 @@ VALUES
   (7, 48, 26),
   (8, 42, 29),
   (9, 58, 18),
-  (10, 35, 35);
+  (10, 35, 35)
+  commit;
 
 -- Inserir dados na tabela pessoa
+begin;
 INSERT INTO pessoa (nome, morada, email, telefone, noident, nacionalidade, atrdisc)
 VALUES
   ('João Silva', 'Rua A, Lisboa', 'joao.silva@example.com', '123456789', '123456789ABC', 'Portuguesa', 'C'),
@@ -71,23 +80,29 @@ VALUES
   ('Sofia Pereira', 'Avenida H, Viseu', 'sofia.pereira@example.com', '789789789', '789789789VWX', 'Portuguesa', 'C'),
   ('Miguel Santos', 'Rua I, Évora', 'miguel.santos@example.com', '987987987', '987987987YZA', 'Portuguesa', 'C'),
   ('Inês Almeida', 'Avenida J, Leiria', 'ines.almeida@example.com', '321321321', '321321321ABC', 'Portuguesa', 'C'),
-  ('Inês Fernandes', 'Miami', 'ines.fernandes@example.com', '321321301', '391321321ABC', 'Americana', 'C');
+  ('Inês Fernandes', 'Miami', 'ines.fernandes@example.com', '321321301', '391321321ABC', 'Americana', 'C')
+  commit;
 
 -- Inserir dados na tabela loja
+begin;
 INSERT INTO loja (codigo, email, endereco, localidade, gestor)
 VALUES
   (1, 'loja1@example.com', 'Rua X, Lisboa', 'Lisboa', 2),
   (2, 'loja2@example.com', 'Avenida Y, Porto', 'Porto', 4),
-  (3, 'loja3@example.com', 'Rua Z, Braga', 'Braga', 6);
+  (3, 'loja3@example.com', 'Rua Z, Braga', 'Braga', 6)
+  commit;
 
 -- Inserir dados na tabela telefoneloja
+begin;
 INSERT INTO telefoneloja (loja, numero)
 VALUES
   (1, '123456789'),
   (2, ''),
-  (3, '111222333');
+  (3, '111222333')
+  commit;
 
 -- Inserir dados na tabela reserva
+begin;
 INSERT INTO reserva (noreserva, loja, dtinicio, dtfim, valor, bicicleta)
 VALUES
   (1, 2, '2023-02-01 10:00:00', '2023-02-01 12:00:00', 200.00, 2),
@@ -105,9 +120,11 @@ VALUES
   (6, 2, '2022-02-01 10:00:00', '2022-02-01 12:00:00', 20.00, 2),
   (6, 1, '2022-03-01 12:00:00', '2022-03-01 14:00:00', 99.00, 3),
   (4, 3, '2022-04-01 14:00:00', '2022-04-01 16:00:00', 25.00, 4),
-  (5, 3, '2022-05-01 16:00:00', '2022-05-01 18:00:00', 22.00, 5);
+  (5, 3, '2022-05-01 16:00:00', '2022-05-01 18:00:00', 22.00, 5)
+  commit;
 
 -- Inserir dados na tabela clientereserva
+begin;
 INSERT INTO clientereserva (cliente, reserva, loja)
 VALUES
   (1, 1, 2),
@@ -125,4 +142,5 @@ VALUES
   (2, 6, 2),
   (2, 6, 1),
   (4, 4, 3),
-  (3, 5, 3);
+  (3, 5, 3)
+  commit;
