@@ -1,15 +1,9 @@
 /*
  * Delete de dados das tabelas criadas.
  * */
-<<<<<<< HEAD
  
- begin;
-delete from bicicleta;
-=======
-
 begin;
-delete from bicicleta
->>>>>>> 7c895b332e2d88e4adb37cadd1fbb4c2cf2d81cf
+delete from bicicleta;
 commit;
 
 begin;
